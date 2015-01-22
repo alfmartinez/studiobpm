@@ -5,9 +5,10 @@
 
 'use strict';
 
-var MainPage = function() {  
+var MainPage = function() {
   this.mainSpace = element(by.css('#mainSpace'));
   this.greetings = this.mainSpace.element(by.css('.greetings'));
+  this.modelList = this.mainSpace.element(by.css('.modelList'));
 };
 
 module.exports = new MainPage();

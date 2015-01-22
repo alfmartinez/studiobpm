@@ -21,4 +21,12 @@ describe('Main View', function() {
     expect(page.greetings.getText()).toBe('Welcome, Test User.');
   });
 
+  it('should display a "Create new model" button in Model List', function(){
+    loginPage.login({
+      email: 'test@test.com',
+      password: 'test'
+    });
+    expect(page.modelList.element(by.buttonText('Create new model')).isPresent()).toBeTruthy();
+  });
+
 });
