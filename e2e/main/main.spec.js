@@ -1,16 +1,24 @@
 'use strict';
 
 describe('Main View', function() {
-  var page;
+  var page, loginPage;
 
   beforeEach(function() {
-    browser.get('/');
     page = require('./main.po');
+    loginPage = require('./../login.po');
   });
 
-  it('should include jumbotron with correct data', function() {
-    expect(page.h1El.getText()).toBe('\'Allo, \'Allo!');
-    expect(page.imgEl.getAttribute('src')).toMatch(/assets\/images\/yeoman.png$/);
-    expect(page.imgEl.getAttribute('alt')).toBe('I\'m Yeoman');
+  it('should ask user to log in if not logged in', function(){
+    browser.get('/');
+    expect(page.greetings.getText()).toBe('Please, log in or register to access features.');
   });
+
+  it('should greet user if logged in', function(){
+    loginPage.login({
+      email: 'test@test.com',
+      password: 'test'
+    });
+    expect(page.greetings.getText()).toBe('Welcome, Test User.');
+  });
+
 });
