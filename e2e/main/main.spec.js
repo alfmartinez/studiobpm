@@ -37,4 +37,12 @@ describe('Main View', function() {
     expect(element.all(by.repeater('model in models')).count()).toEqual(0);
   });
 
+  it('should display a list of models if user has models', function(){
+    loginPage.login({
+      email: 'testWithModels@test.com',
+      password: 'test'
+    });
+    expect(element.all(by.repeater('model in models')).count()).toEqual(0);
+  });
+
 });
