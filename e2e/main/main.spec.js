@@ -10,8 +10,7 @@ describe('Main View', function() {
 
 	it('should ask user to log in if not logged in', function() {
 		browser.get('/');
-		expect(page.greetings.getText()).toBe(
-			'Please, log in or register to access features.');
+		expect(browser.getCurrentUrl()).toContain('/login');
 	});
 
 	it('should greet user if logged in', function() {

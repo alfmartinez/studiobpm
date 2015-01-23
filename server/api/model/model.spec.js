@@ -6,6 +6,7 @@ var request = require('supertest');
 var User = require('../user/user.model');
 var Model = require('./model.model');
 var Access = require('./access.model');
+var agent = request.agent(app);
 
 var user = new User({
 	provider: 'local',
@@ -60,11 +61,27 @@ describe('GET /api/models', function() {
 
 	it('should respond with empty array if authenticated and no model', function(
 		done) {
-		var agent = request.agent(app);
-		agent.post('/auth/local').send({
+		doLogin({
 			email: 'newbee@test.com',
 			password: 'password'
-		}).expect(200).end(function(err, res) {
+		}, expectModelCount(0, done));
+	});
+
+	it('should respond with one model array if authenticated and one model',
+		function(
+			done) {
+			doLogin({
+				email: 'modeler@test.com',
+				password: 'password'
+			}, expectModelCount(1, done));
+		});
+
+	function doLogin(user, callback) {
+		agent.post('/auth/local').send(user).expect(200).end(callback);
+	}
+
+	function expectModelCount(count, done) {
+		return function(err, res) {
 			var token = res.body.token;
 			setTimeout(function() {
 				agent
@@ -73,36 +90,12 @@ describe('GET /api/models', function() {
 					.expect('Content-Type', /json/)
 					.end(function(err, res) {
 						if (err) return done(err);
-						res.body.should.be.instanceof(Array).and.have.lengthOf(0);
+						res.body.should.be.instanceof(Array).and.have.lengthOf(count);
 						done();
 					});
 			}, 100);
 
-		});
-	});
-
-	it('should respond with one model array if authenticated and one model',
-		function(
-			done) {
-			var agent = request.agent(app);
-			agent.post('/auth/local').send({
-				email: 'modeler@test.com',
-				password: 'password'
-			}).expect(200).end(function(err, res) {
-				var token = res.body.token;
-				setTimeout(function() {
-					agent
-						.get('/api/models?access_token=' + token)
-						.expect(200)
-						.expect('Content-Type', /json/)
-						.end(function(err, res) {
-							if (err) return done(err);
-							res.body.should.be.instanceof(Array).and.have.lengthOf(1);
-							done();
-						});
-				}, 100);
-
-			});
-		});
+		}
+	}
 
 });

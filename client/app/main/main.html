@@ -10,10 +10,9 @@
 
 <div id="mainSpace" class="container">
   <div class="greetings">
-    <p ng-hide="isLoggedIn()">Please, log in or register to access features.</p>
-    <p ng-show="isLoggedIn()">Welcome, {{ getCurrentUser().name }}.</p>
+    <p>Welcome, {{ getCurrentUser().name }}.</p>
   </div>
-  <div ng-show="isLoggedIn()" class="modelList">
+  <div class="modelList">
     <ul>
       <li><button class="newModel">Create new model</button></li>
       <li ng-repeat="model in models">
