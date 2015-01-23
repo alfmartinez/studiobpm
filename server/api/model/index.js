@@ -2,14 +2,17 @@
 
 var express = require('express');
 var controller = require('./model.controller');
+var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+
+
+router.get('/', auth.hasRole('modeler'), controller.index);
+router.get('/:id', auth.hasRole('modeler'), controller.show);
+router.post('/', auth.hasRole('modeler'), controller.create);
+router.put('/:id', auth.hasRole('modeler'), controller.update);
+router.patch('/:id', auth.hasRole('modeler'), controller.update);
+router.delete('/:id', auth.hasRole('modeler'), controller.destroy);
 
 module.exports = router;
