@@ -16,6 +16,9 @@
   <div class="modelList">
     <ul>
       <li><button class="newModel">Create new model</button></li>
+      <li ng-repeat="model in models">
+        {{ model.name }}
+      </li>
     </ul>
   </div>
 </div>

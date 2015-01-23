@@ -29,4 +29,12 @@ describe('Main View', function() {
     expect(page.modelList.element(by.buttonText('Create new model')).isPresent()).toBeTruthy();
   });
 
+  it('should display an empty list of models if user has no models', function(){
+    loginPage.login({
+      email: 'test@test.com',
+      password: 'test'
+    });
+    expect(element.all(by.repeater('model in models')).count()).toEqual(0);
+  });
+
 });
